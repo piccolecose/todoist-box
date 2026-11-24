@@ -8,7 +8,8 @@
     "build": "ncc build index.js --out dist --minify --target es2022",
     "lint": "oxlint --deny-warnings index.js test",
     "format:check": "prettier --check .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "node --test --experimental-test-coverage --test-coverage-include=index.js --test-coverage-lines=75 'test/**/*.test.js'"
   },
   "dependencies": {
     "@actions/github": "^6.0.1",

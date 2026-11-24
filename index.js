@@ -248,6 +248,21 @@ async function updateGist(data) {
   }
 }
 
-(async () => {
-  await main();
-})();
+module.exports = {
+  assertRequiredEnv,
+  migrateToken,
+  exchangeAuthCodeForAccessToken,
+  getTodoistAccessToken,
+  fetchData,
+  fetchStreakDays,
+  daysBetween,
+  calculateStreak,
+  updateGist,
+  main,
+};
+
+if (require.main === module) {
+  (async () => {
+    await main();
+  })();
+}
