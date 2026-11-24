@@ -22,7 +22,9 @@ function assertRequiredEnv() {
   if (!clientSecret) missing.push("TODOIST_CLIENT_SECRET");
 
   if (missing.length > 0) {
-    throw new Error(`Missing required environment variables: ${missing.join(", ")}`);
+    throw new Error(
+      `Missing required environment variables: ${missing.join(", ")}`,
+    );
   }
 }
 
@@ -38,13 +40,13 @@ async function migrateToken() {
         personal_token: personalToken,
         scope: "data:read",
       }),
-    }
+    },
   );
 
   const data = await response.json();
   if (!response.ok) {
     throw new Error(
-      `Failed to migrate token (${response.status}): ${JSON.stringify(data)}`
+      `Failed to migrate token (${response.status}): ${JSON.stringify(data)}`,
     );
   }
   return data.access_token;
@@ -70,7 +72,7 @@ async function exchangeAuthCodeForAccessToken() {
   const data = await response.json();
   if (!response.ok || !data.access_token) {
     throw new Error(
-      `Failed to exchange OAuth code (${response.status}): ${JSON.stringify(data)}`
+      `Failed to exchange OAuth code (${response.status}): ${JSON.stringify(data)}`,
     );
   }
 
@@ -87,7 +89,7 @@ async function getTodoistAccessToken() {
   }
 
   throw new Error(
-    "Missing Todoist auth. Set TODOIST_API_KEY/TODOIST_PERSONAL_TOKEN (recommended long-lived secret) or use TODOIST_AUTH_CODE with TODOIST_CLIENT_ID/TODOIST_CLIENT_SECRET."
+    "Missing Todoist auth. Set TODOIST_API_KEY/TODOIST_PERSONAL_TOKEN (recommended long-lived secret) or use TODOIST_AUTH_CODE with TODOIST_CLIENT_ID/TODOIST_CLIENT_SECRET.",
   );
 }
 
@@ -107,7 +109,7 @@ async function fetchData(accessToken) {
   const syncData = await syncRes.json();
   if (!syncRes.ok) {
     throw new Error(
-      `Failed to fetch sync data (${syncRes.status}): ${JSON.stringify(syncData)}`
+      `Failed to fetch sync data (${syncRes.status}): ${JSON.stringify(syncData)}`,
     );
   }
 
@@ -207,7 +209,7 @@ async function updateGist(data) {
     gist = await octokit.rest.gists.get({ gist_id: gistId });
   } catch (error) {
     console.error(`Unable to get gist\n${error}`);
-    throw new Error('Unable to get gist');
+    throw new Error("Unable to get gist");
   }
 
   const lines = [];
@@ -215,10 +217,10 @@ async function updateGist(data) {
 
   lines.push(`🏆 ${humanize(karma)} Karma Points`);
   lines.push(
-    `🌞 Completed ${days_items[0].total_completed.toString()} tasks today`
+    `🌞 Completed ${days_items[0].total_completed.toString()} tasks today`,
   );
   lines.push(
-    `📅 Completed ${week_items[0].total_completed.toString()} tasks this week`
+    `📅 Completed ${week_items[0].total_completed.toString()} tasks this week`,
   );
   lines.push(`✅ Completed ${humanize(completed_count)} tasks so far`);
   lines.push(`⌛ Current streak is ${humanize(streak)} days`);
@@ -242,10 +244,25 @@ async function updateGist(data) {
     }
   } catch (error) {
     console.error(`Unable to update gist\n${error}`);
-    throw new Error('Unable to update gist');
+    throw new Error("Unable to update gist");
   }
 }
 
-(async () => {
-  await main();
-})();
+module.exports = {
+  assertRequiredEnv,
+  migrateToken,
+  exchangeAuthCodeForAccessToken,
+  getTodoistAccessToken,
+  fetchData,
+  fetchStreakDays,
+  daysBetween,
+  calculateStreak,
+  updateGist,
+  main,
+};
+
+if (require.main === module) {
+  (async () => {
+    await main();
+  })();
+}

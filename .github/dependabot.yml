@@ -1,15 +1,15 @@
 version: 2
 
 updates:
-  - package-ecosystem: 'github-actions'
-    directory: '/'
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
-      interval: 'daily'
-      
-  - package-ecosystem: 'npm'
-    directory: '/'
+      interval: "daily"
+
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     rebase-strategy: "auto"
     open-pull-requests-limit: 3
     ignore:

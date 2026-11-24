@@ -1,0 +1,6 @@
+dist
+package-lock.json
+coverage
+screenshots
+screenshot.png
+node_modules

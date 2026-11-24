@@ -22,6 +22,17 @@ jobs:
           key: node_modules-${{ hashFiles('package-lock.json') }}
           restore-keys: node_modules- # Take any latest cache if failed to find it for current package-lock.json
       - run: npm install
+      - run: npm run lint
+      - run: npm run format:check
+      - name: Test with coverage
+        run: |
+          set -o pipefail
+          npm test 2>&1 | tee test-output.txt
+          grep 'all files' test-output.txt
+      - name: Coverage summary
+        if: always()
+        run: |
+          { echo '## Coverage'; echo '```'; sed -n '/start of coverage report/,/end of coverage report/p' test-output.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
       - run: npm run build
       # Dependabot runs get Dependabot secrets, not these, so the live run
       # would fail on missing env vars. The build above still covers them.

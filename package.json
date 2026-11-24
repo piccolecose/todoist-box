@@ -5,7 +5,11 @@
   "author": "Josh",
   "license": "MIT",
   "scripts": {
-    "build": "ncc build index.js --out dist --minify --target es2022"
+    "build": "ncc build index.js --out dist --minify --target es2022",
+    "lint": "oxlint --deny-warnings index.js test",
+    "format:check": "prettier --check .",
+    "format": "prettier --write .",
+    "test": "node --test --experimental-test-coverage --test-coverage-include=index.js --test-coverage-lines=75 'test/**/*.test.js'"
   },
   "dependencies": {
     "@actions/github": "^6.0.1",
@@ -16,6 +20,7 @@
   "devDependencies": {
     "@vercel/ncc": "^0.38.4",
     "husky": "9.1.7",
+    "oxlint": "^1.95.0",
     "prettier": "3.10.1",
     "pretty-quick": "4.2.2"
   },
